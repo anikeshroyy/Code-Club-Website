@@ -345,7 +345,7 @@ const codeSnippet = [
   { line: 2, content: "import { useState, useEffect } from 'react';" },
   { line: 3, content: "" },
   { line: 4, content: "// Code Club GEC Jamui - Main Component" },
-  { line: 5, content: "const CodeClub = () => {" },
+  { line: 5, content: "const codeClub = () => {" },
   { line: 6, content: "  const [isLoading, setIsLoading] = useState(true);" },
   { line: 7, content: "" },
   { line: 8, content: "  useEffect(() => {" },
@@ -360,13 +360,13 @@ const codeSnippet = [
   { line: 17, content: "" },
   { line: 18, content: "  return (" },
   { line: 19, content: "    <div className=\"code-club\">" },
-  { line: 20, content: "      <h1>Welcome to Code Club</h1>" },
+  { line: 20, content: "      <h2>Welcome to Code Club</h2>" },
   { line: 21, content: "      <p>Learn. Build. Innovate.</p>" },
   { line: 22, content: "    </div>" },
   { line: 23, content: "  );" },
   { line: 24, content: "};" },
   { line: 25, content: "" },
-  { line: 26, content: "export default CodeClub;" },
+  { line: 26, content: "export default codeClub;" },
 ];
 
 const HeroSection: React.FC = () => {

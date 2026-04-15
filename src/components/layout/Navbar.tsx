@@ -249,15 +249,15 @@ const Navbar: React.FC = () => {
             
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
               <ThemeToggle sx={{ mr: 1 }} />
-              <Tooltip title="Your Profile">
-                <IconButton sx={{ ml: 1, p: 0.5 }}>
+              <Tooltip title="Admin Login">
+                <IconButton component={Link} to="/admin/login" sx={{ ml: 1, p: 0.5 }}>
                   <Avatar 
                     sx={{ 
                       width: 32, 
                       height: 32,
                       border: `2px solid ${theme.palette.primary.main}`,
                     }}
-                    alt="User"
+                    alt="Admin"
                     src="/images/avatar-placeholder.jpg"
                   />
                 </IconButton>
@@ -321,13 +321,19 @@ const Navbar: React.FC = () => {
               </Box>
               
               <Box sx={{ px: 2, pb: 3 }}>
-                <Box sx={{ 
+                <Box 
+                  component={Link}
+                  to="/admin/login"
+                  onClick={handleDrawerToggle}
+                  sx={{ 
                   p: 2, 
                   borderRadius: '12px', 
                   bgcolor: theme.palette.mode === 'light' ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
                   display: 'flex',
                   alignItems: 'center',
-                  mb: 2
+                  mb: 2,
+                  textDecoration: 'none',
+                  color: 'inherit'
                 }}>
                   <Avatar 
                     sx={{ 
@@ -336,12 +342,12 @@ const Navbar: React.FC = () => {
                       border: `2px solid ${theme.palette.primary.main}`,
                       mr: 2
                     }}
-                    alt="User"
+                    alt="Admin"
                     src="/images/avatar-placeholder.jpg"
                   />
                   <Box>
-                    <Typography variant="subtitle2" fontWeight={600}>Guest User</Typography>
-                    <Typography variant="caption" color="textSecondary">guest@example.com</Typography>
+                    <Typography variant="subtitle2" fontWeight={600}>Admin Panel</Typography>
+                    <Typography variant="caption" color="textSecondary">Manage Website</Typography>
                   </Box>
                 </Box>
               </Box>

@@ -1,66 +1,16 @@
-import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, Avatar } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Container, Grid, Card, CardContent, Avatar, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
+import API_BASE from '../../services/api';
 
-// Faculty coordinator data
-const facultyCoordinators = [
-  {
-    id: 1,
-    name: 'Mr. Sritosh Kumar',
-    position: 'HOD, CSE Department',
-    image: '/images/faculty/shritosh-kr.jpg',
-  },
-  {
-    id: 2,
-    name: 'Mr. Brajesh Kumar',
-    position: 'HOD, ECE Department',
-    image: '/images/faculty/brajesh-kr.jpg',
-  },
-  {
-    id: 3,
-    name: 'Mr. Debesh Sandaliya',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/debesh-san2.jpg',
-  },
-  {
-    id: 4,
-    name: 'Mr. Manish Kumar',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/manish-kr_output.jpeg',
-  },
-  {
-    id: 5,
-    name: 'Mr. Prashant Kumar',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/prashant-kr.jpeg',
-  },
-  {
-    id: 6,
-    name: 'Mr. Dharmveer Kumar',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/dhramveer-kr.jpeg',
-  },
-  {
-    id: 7,
-    name: 'Miss. Jyoti Kumari',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/jyoti-kri_output.jpeg',
-  },
-  {
-    id: 5,
-    name: 'Miss. Kanchan Kumari',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/kanchan-kri_output.jpeg',
-  },
-  {
-    id: 5,
-    name: 'Miss. Navodita Saini',
-    position: 'Assistant Professor, CSE Department',
-    image: '/images/faculty/rajiv-mishra.jpg',
-  },
-
-];
+interface Faculty {
+  _id: string;
+  name: string;
+  position: string;
+  department: string;
+  imageUrl: string;
+}
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   position: 'relative',
@@ -80,7 +30,7 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
   }
 }));
 
-const CoordinatorCard = styled(Card)(({ theme }) => ({
+const CoordinatorCard = styled(Card)(() => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -88,75 +38,72 @@ const CoordinatorCard = styled(Card)(({ theme }) => ({
   overflow: 'hidden',
   transition: 'transform 0.3s, box-shadow 0.3s',
   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.12)',
-  },
+  '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 12px 30px rgba(0, 0, 0, 0.12)' },
 }));
 
 const StyledCardContent = styled(CardContent)(({ theme }) => ({
-  flexGrow: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: theme.spacing(4),
-  textAlign: 'center',
+  flexGrow: 1, display: 'flex', flexDirection: 'column',
+  justifyContent: 'center', alignItems: 'center',
+  padding: theme.spacing(4), textAlign: 'center',
 }));
 
 const CoordinatorAvatar = styled(Avatar)(({ theme }) => ({
-  width: 120,
-  height: 120,
-  margin: '0 auto',
+  width: 120, height: 120, margin: '0 auto',
   border: `4px solid ${theme.palette.background.paper}`,
   boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
 }));
 
 const FacultyCoordinators: React.FC = () => {
+  const [faculty, setFaculty] = useState<Faculty[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/faculty`)
+      .then(r => r.json())
+      .then(data => setFaculty(Array.isArray(data) ? data : []))
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
-    <Box sx={{ py: 10, bgcolor: (theme) => theme.palette.mode === 'light' ? 'grey.50' : 'grey.900' }}>
+    <Box sx={{ py: 10, bgcolor: theme => theme.palette.mode === 'light' ? 'grey.50' : 'grey.900' }}>
       <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <SectionTitle variant="h4">
-            Guidance From Our Faculty Coordinators
-          </SectionTitle>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <SectionTitle variant="h4">Guidance From Our Faculty Coordinators</SectionTitle>
         </motion.div>
 
-        <Grid container spacing={4} alignItems="stretch">
-          {facultyCoordinators.map((coordinator, index) => (
-            <Grid item xs={12} md={4} key={coordinator.id} sx={{ display: 'flex' }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                style={{ width: '100%' }}
-              >
-                <CoordinatorCard>
-                  <StyledCardContent>
-                    <CoordinatorAvatar
-                      alt={coordinator.name}
-                      src={coordinator.image}
-                      sx={{ mb: 3 }}
-                    />
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
-                      {coordinator.name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'center', maxWidth: '100%' }}>
-                      {coordinator.position}
-                    </Typography>
-                  </StyledCardContent>
-                </CoordinatorCard>
-              </motion.div>
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Grid container spacing={4} alignItems="stretch">
+            {faculty.map((coordinator, index) => (
+              <Grid item xs={12} md={4} key={coordinator._id} sx={{ display: 'flex' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                  style={{ width: '100%' }}
+                >
+                  <CoordinatorCard>
+                    <StyledCardContent>
+                      <CoordinatorAvatar alt={coordinator.name} src={coordinator.imageUrl} sx={{ mb: 3 }} />
+                      <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
+                        {coordinator.name}
+                      </Typography>
+                      <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'center' }}>
+                        {coordinator.position}
+                      </Typography>
+                    </StyledCardContent>
+                  </CoordinatorCard>
+                </motion.div>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
     </Box>
   );
 };
 
-export default FacultyCoordinators; 
+export default FacultyCoordinators;
