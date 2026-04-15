@@ -55,12 +55,7 @@ const EventInfo = styled(Box)(({ theme }) => ({
   '& svg': { marginRight: '8px', color: theme.palette.primary.main, fontSize: '1rem' },
 }));
 
-const RegisterButton = styled(Button)(({ theme }) => ({
-  marginTop: '16px', padding: '8px 24px', borderRadius: '30px',
-  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  color: '#fff', fontWeight: 600, textTransform: 'none', transition: 'all 0.3s ease',
-  '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 8px 16px rgba(0,0,0,0.1)' },
-}));
+
 
 const GradientFallback = styled(Box)(({ theme }) => ({
   height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center',

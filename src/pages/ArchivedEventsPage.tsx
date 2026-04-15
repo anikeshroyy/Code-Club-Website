@@ -49,7 +49,6 @@ const EventInfo = styled(Box)(({ theme }) => ({
 }));
 
 const ArchivedEventsPage: React.FC = () => {
-  const theme = useTheme();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 

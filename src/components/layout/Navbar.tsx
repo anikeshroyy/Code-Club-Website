@@ -124,27 +124,11 @@ const MobileNavItem = styled(ListItem)(({ theme }) => ({
   },
 }));
 
-const NewBadge = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '0',
-  right: '0',
-  backgroundColor: theme.palette.secondary.main,
-  color: theme.palette.common.white,
-  fontSize: '0.6rem',
-  padding: '2px 6px',
-  borderRadius: '4px',
-  fontWeight: 'bold',
-  transform: 'translate(30%, -30%)',
-}));
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 100,
-  });
   const theme = useTheme();
   useCustomTheme();
 

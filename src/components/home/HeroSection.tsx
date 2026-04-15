@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Container, Typography, Button, useTheme, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Styled components
@@ -138,25 +138,7 @@ const CodeContent = styled(Box)(({ theme }) => ({
   flex: 1,
 }));
 
-const Keyword = styled('span')({
-  color: '#ff79c6',
-});
 
-const String = styled('span')({
-  color: '#f1fa8c',
-});
-
-const Comment = styled('span')({
-  color: '#6272a4',
-});
-
-const Function = styled('span')({
-  color: '#50fa7b',
-});
-
-const Variable = styled('span')({
-  color: '#8be9fd',
-});
 
 // Fix the FloatingShapes component to avoid window reference during SSR
 const FloatingShapes = () => {

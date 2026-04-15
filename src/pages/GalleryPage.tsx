@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, useTheme, Chip, Stack, IconButton, Dialog, DialogContent, CircularProgress } from '@mui/material';
+import { Box, Typography, Container, Grid, Chip, Stack, IconButton, Dialog, DialogContent, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import GalleryHero from '../components/gallery/GalleryHero';
