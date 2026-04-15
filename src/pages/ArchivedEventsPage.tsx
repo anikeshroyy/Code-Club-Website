@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box, Container, Typography, Grid, Card, CardContent, CardMedia,
-  Button, Chip, CircularProgress, useTheme,
+  Button, Chip, CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';

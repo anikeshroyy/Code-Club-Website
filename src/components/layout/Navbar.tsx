@@ -10,7 +10,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  useScrollTrigger,
   Container,
   useTheme,
   Avatar,
