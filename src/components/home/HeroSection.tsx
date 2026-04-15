@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Container, Typography, Button, useTheme, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Styled components
@@ -138,25 +138,7 @@ const CodeContent = styled(Box)(({ theme }) => ({
   flex: 1,
 }));
 
-const Keyword = styled('span')({
-  color: '#ff79c6',
-});
 
-const String = styled('span')({
-  color: '#f1fa8c',
-});
-
-const Comment = styled('span')({
-  color: '#6272a4',
-});
-
-const Function = styled('span')({
-  color: '#50fa7b',
-});
-
-const Variable = styled('span')({
-  color: '#8be9fd',
-});
 
 // Fix the FloatingShapes component to avoid window reference during SSR
 const FloatingShapes = () => {
@@ -345,7 +327,7 @@ const codeSnippet = [
   { line: 2, content: "import { useState, useEffect } from 'react';" },
   { line: 3, content: "" },
   { line: 4, content: "// Code Club GEC Jamui - Main Component" },
-  { line: 5, content: "const CodeClub = () => {" },
+  { line: 5, content: "const codeClub = () => {" },
   { line: 6, content: "  const [isLoading, setIsLoading] = useState(true);" },
   { line: 7, content: "" },
   { line: 8, content: "  useEffect(() => {" },
@@ -360,13 +342,13 @@ const codeSnippet = [
   { line: 17, content: "" },
   { line: 18, content: "  return (" },
   { line: 19, content: "    <div className=\"code-club\">" },
-  { line: 20, content: "      <h1>Welcome to Code Club</h1>" },
+  { line: 20, content: "      <h2>Welcome to Code Club</h2>" },
   { line: 21, content: "      <p>Learn. Build. Innovate.</p>" },
   { line: 22, content: "    </div>" },
   { line: 23, content: "  );" },
   { line: 24, content: "};" },
   { line: 25, content: "" },
-  { line: 26, content: "export default CodeClub;" },
+  { line: 26, content: "export default codeClub;" },
 ];
 
 const HeroSection: React.FC = () => {

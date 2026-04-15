@@ -7,7 +7,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CodeIcon from '@mui/icons-material/Code';
-import SchoolIcon from '@mui/icons-material/School';
+
 
 // Styled components
 const ResourceCard = styled(Card)(({ theme }) => ({

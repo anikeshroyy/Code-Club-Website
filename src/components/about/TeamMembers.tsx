@@ -1,102 +1,21 @@
-import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, Avatar, IconButton, Stack } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Container, Grid, Card, CardContent, Avatar, IconButton, Stack, CircularProgress, Chip, Button, Dialog, DialogTitle, DialogContent, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import API_BASE from '../../services/api';
 
-// Team member data
-const teamMembers = [
-  {
-    id: 1,
-    name: 'Sanjeev Ranjan',
-    position: 'President',
-    image: '/images/team/Sanjeev-dp.jpg',
-    social: {
-      linkedin: 'https://linkedin.com/in/rahul-sharma',
-      github: 'https://github.com/rahulsharma',
-      instagram: 'https://instagram.com/rahulsharma',
-    },
-  },
-  {
-    id: 2,
-    name: 'Dipsikha Jha',
-    position: 'Vice President',
-    image: '/images/team/Dipsikha-jha.jpg',
-    social: {
-      linkedin: 'https://linkedin.com/in/priya-singh',
-      github: 'https://github.com/priyasingh',
-      instagram: 'https://instagram.com/priyasingh',
-    },
-  },
-  {
-    id: 3,
-    name: 'Rahul Kumar',
-    position: 'HR Manager',
-    image: '/images/team/RAHUL-KUMAR.jpg',
-    social: {
-      linkedin: 'https://linkedin.com/in/amit-kumar',
-      github: 'https://github.com/amitkumar',
-      instagram: 'https://instagram.com/amitkumar',
-    },
-  },
-  {
-    id: 4,
-    name: 'Anikesh Roy',
-    position: 'Technical Lead',
-    image: '/images/team/profile_pic.png',
-    social: {
-      linkedin: 'https://linkedin.com/in/amit-kumar',
-      github: 'https://github.com/amitkumar',
-      instagram: 'https://instagram.com/amitkumar',
-    },
-  },
-  {
-    id: 5,
-    name: 'Riya Singh',
-    position: 'Joint Secretary C, C++, DSA',
-    image: '/images/team/Riya-singh.jpg',
-    social: {
-      linkedin: 'https://linkedin.com/in/neha-gupta',
-      github: 'https://github.com/nehagupta',
-      instagram: 'https://instagram.com/nehagupta',
-    },
-  },
-  {
-    id: 6,
-    name: 'Shivam Sony',
-    position: 'Deputy Secretary HR',
-    image: '/images/team/Shivam-dp.jpeg',
-    social: {
-      linkedin: 'https://linkedin.com/in/vikram-patel',
-      github: 'https://github.com/vikrampatel',
-      instagram: 'https://instagram.com/vikrampatel',
-    },
-  },
-  {
-    id: 7,
-    name: 'Vikash Kumar',
-    position: 'Deputy Secretary Social Media',
-    image: '/images/team/Vikash-vaibhav-Gupta.jpg',
-    social: {
-      linkedin: 'https://linkedin.com/in/ananya-reddy',
-      github: 'https://github.com/ananyareddy',
-      instagram: 'https://instagram.com/ananyareddy',
-    },
-  },
-  {
-    id: 8,
-    name: 'Sumit Kumar',
-    position: 'Deputy Secretary Photography',
-    image: '/images/team/Sumit-dp.jpeg',
-    social: {
-      linkedin: 'https://linkedin.com/in/ananya-reddy',
-      github: 'https://github.com/ananyareddy',
-      instagram: 'https://instagram.com/ananyareddy',
-    },
-  },
-];
+interface TeamMember {
+  _id: string;
+  name: string;
+  position: string;
+  batch: string;
+  isPastMember: boolean;
+  imageUrl: string;
+  social: { linkedin: string; github: string; instagram: string };
+}
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   position: 'relative',
@@ -124,7 +43,7 @@ const SectionDescription = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const MemberCard = styled(Card)(({ theme }) => ({
+const MemberCard = styled(Card)(() => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -156,108 +75,127 @@ const MemberAvatar = styled(Avatar)(({ theme }) => ({
   boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
 }));
 
-const SocialIcons = styled(Stack)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-}));
-
 const TeamMembers: React.FC = () => {
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [alumniOpen, setAlumniOpen] = useState(false);
+  const theme = useTheme();
+
+  useEffect(() => {
+    fetch(`${API_BASE}/team`)
+      .then(r => r.json())
+      .then(data => setMembers(Array.isArray(data) ? data : []))
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const activeMembers = members.filter(m => !m.isPastMember);
+  const pastMembers = members.filter(m => m.isPastMember);
+
+  const renderMemberCard = (member: TeamMember, index: number) => (
+    <Grid item xs={12} sm={6} md={4} key={member._id} sx={{ display: 'flex' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 + (index % 10) * 0.1 }}
+        style={{ width: '100%' }}
+      >
+        <MemberCard>
+          <StyledCardContent>
+            <MemberAvatar alt={member.name} src={member.imageUrl} sx={{ mb: 2 }} />
+            <Typography variant="h5" sx={{ fontWeight: 600, textAlign: 'center', mb: 0.5 }}>
+              {member.name}
+            </Typography>
+            <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 1, flexWrap: 'wrap', gap: 1 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                {member.position}
+              </Typography>
+              {member.batch && (
+                <Chip label={member.batch} size="small" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+              )}
+            </Stack>
+            <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 1 }}>
+              {member.social.linkedin && (
+                <IconButton aria-label="LinkedIn" component="a" href={member.social.linkedin} target="_blank" rel="noopener noreferrer" sx={{ color: '#0077B5', p: 0.5 }}>
+                  <LinkedInIcon />
+                </IconButton>
+              )}
+              {member.social.github && (
+                <IconButton aria-label="GitHub" component="a" href={member.social.github} target="_blank" rel="noopener noreferrer"
+                  sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#333', p: 0.5 }}>
+                  <GitHubIcon />
+                </IconButton>
+              )}
+              {member.social.instagram && (
+                <IconButton aria-label="Instagram" component="a" href={member.social.instagram} target="_blank" rel="noopener noreferrer" sx={{ color: '#E1306C', p: 0.5 }}>
+                  <InstagramIcon />
+                </IconButton>
+              )}
+            </Stack>
+          </StyledCardContent>
+        </MemberCard>
+      </motion.div>
+    </Grid>
+  );
+
   return (
     <Box sx={{ py: 10 }}>
       <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <SectionTitle variant="h4">
-            Meet The Team
-          </SectionTitle>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <SectionTitle variant="h4">Meet The Team</SectionTitle>
           <SectionDescription variant="body1">
-            Our team consists of passionate and dedicated students who work tirelessly to organize events, 
-            workshops, and hackathons. Each member brings unique skills and perspectives, 
-            contributing to the vibrant community that is Code Club.
+            Our team consists of passionate and dedicated students who work tirelessly to organize events,
+            workshops, and hackathons.
           </SectionDescription>
         </motion.div>
 
-        <Grid container spacing={4} alignItems="stretch">
-          {teamMembers.map((member, index) => (
-            <Grid item xs={12} sm={6} md={4} key={member.id} sx={{ display: 'flex' }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                style={{ width: '100%' }}
-              >
-                <MemberCard>
-                  <StyledCardContent>
-                    <MemberAvatar
-                      alt={member.name}
-                      src={member.image}
-                      sx={{ mb: 3 }}
-                    />
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
-                      {member.name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'center', maxWidth: '100%' }}>
-                      {member.position}
-                    </Typography>
-                    
-                    <SocialIcons direction="row" spacing={1} justifyContent="center">
-                      <IconButton 
-                        aria-label="LinkedIn" 
-                        component="a" 
-                        href={member.social.linkedin} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ 
-                          color: '#0077B5',
-                          '&:hover': { 
-                            backgroundColor: 'rgba(0, 119, 181, 0.1)',
-                          }
-                        }}
-                      >
-                        <LinkedInIcon />
-                      </IconButton>
-                      <IconButton 
-                        aria-label="GitHub" 
-                        component="a" 
-                        href={member.social.github} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ 
-                          color: theme => theme.palette.mode === 'dark' ? '#fff' : '#333',
-                          '&:hover': { 
-                            backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                          }
-                        }}
-                      >
-                        <GitHubIcon />
-                      </IconButton>
-                      <IconButton 
-                        aria-label="Instagram" 
-                        component="a" 
-                        href={member.social.instagram} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ 
-                          color: '#E1306C',
-                          '&:hover': { 
-                            backgroundColor: 'rgba(225, 48, 108, 0.1)',
-                          }
-                        }}
-                      >
-                        <InstagramIcon />
-                      </IconButton>
-                    </SocialIcons>
-                  </StyledCardContent>
-                </MemberCard>
-              </motion.div>
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box>
+            <Grid container spacing={4} alignItems="stretch">
+              {activeMembers.map((member, index) => renderMemberCard(member, index))}
             </Grid>
-          ))}
-        </Grid>
+
+            {pastMembers.length > 0 && (
+              <Box sx={{ textAlign: 'center', mt: 8 }}>
+                <Button 
+                  variant="outlined" 
+                  size="large" 
+                  onClick={() => setAlumniOpen(true)}
+                  sx={{ borderRadius: '30px', textTransform: 'none', fontWeight: 600, px: 4, py: 1 }}
+                >
+                  View Past Members (Alumni)
+                </Button>
+              </Box>
+            )}
+          </Box>
+        )}
       </Container>
+
+      {/* Alumni Dialog */}
+      <Dialog 
+        open={alumniOpen} 
+        onClose={() => setAlumniOpen(false)} 
+        maxWidth="lg" 
+        fullWidth
+        PaperProps={{ sx: { borderRadius: 4, bgcolor: theme.palette.background.default } }}
+      >
+        <DialogTitle sx={{ textAlign: 'center', pt: 4, pb: 1, fontWeight: 800, fontSize: '2rem' }}>
+          Alumni Network
+        </DialogTitle>
+        <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mb: 4 }}>
+          Celebrating the contributions of our past members
+        </Typography>
+        <DialogContent sx={{ px: { xs: 2, md: 4 }, pb: 6 }}>
+          <Grid container spacing={3}>
+            {pastMembers.map((member, index) => renderMemberCard(member, index))}
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
 
-export default TeamMembers; 
+export default TeamMembers;
