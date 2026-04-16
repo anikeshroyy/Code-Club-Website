@@ -221,31 +221,31 @@ const Footer: React.FC = () => {
                   and technical innovation among students.
                 </Typography>
                 <Box sx={{ display: 'flex', mt: 3 }}>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.facebook.com/code.club.gec.jamui" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <SocialButton size="small">
                       <Facebook />
                     </SocialButton>
                   </a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://x.com/codecgecjamui" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <SocialButton size="small">
                       <Twitter />
                     </SocialButton>
                   </a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.instagram.com/codeclubgecjamui/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <SocialButton size="small">
                       <Instagram />
                     </SocialButton>
                   </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.linkedin.com/in/code-club-gec-jamui/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <SocialButton size="small">
                       <LinkedIn />
                     </SocialButton>
                   </a>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  {/* <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <SocialButton size="small">
                       <GitHub />
                     </SocialButton>
-                  </a>
+                  </a> */}
                 </Box>
               </motion.div>
             </Grid>

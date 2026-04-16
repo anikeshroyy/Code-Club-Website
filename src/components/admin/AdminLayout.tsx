@@ -6,7 +6,7 @@ import {
 import {
   Dashboard, People, School, PhotoLibrary, Campaign, Event,
   AssignmentInd, AdminPanelSettings, Menu as MenuIcon, Logout,
-  ChevronLeft,
+  ChevronLeft, LibraryBooks,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { removeToken } from '../../services/api';
@@ -18,6 +18,7 @@ const navItems = [
   { label: 'Team Members',      icon: <People />,            path: '/admin/team' },
   { label: 'Faculty',           icon: <School />,            path: '/admin/faculty' },
   { label: 'Gallery',           icon: <PhotoLibrary />,      path: '/admin/gallery' },
+  { label: 'Resources',         icon: <LibraryBooks />,      path: '/admin/resources' },
   { label: 'Announcements',     icon: <Campaign />,          path: '/admin/announcements' },
   { label: 'Events',            icon: <Event />,             path: '/admin/events' },
   { label: 'Applications',      icon: <AssignmentInd />,     path: '/admin/applications' },

@@ -27,6 +27,7 @@ app.use('/api/gallery',       require('./routes/gallery'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/events',        require('./routes/events'));
 app.use('/api/join',          require('./routes/join'));
+app.use('/api/resources',     require('./routes/resources'));
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));

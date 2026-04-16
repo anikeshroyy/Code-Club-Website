@@ -3,7 +3,7 @@ import {
   Box, Grid, Paper, Typography, CircularProgress, Button, useTheme,
 } from '@mui/material';
 import {
-  People, School, PhotoLibrary, Campaign, Event, AssignmentInd, TrendingUp,
+  People, School, PhotoLibrary, Campaign, Event, AssignmentInd, TrendingUp, LibraryBooks,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ interface Stats {
   team: number;
   faculty: number;
   gallery: number;
+  resources: number;
   announcements: number;
   events: number;
   applications: number;
@@ -33,6 +34,7 @@ const statCards: StatCard[] = [
   { label: 'Team Members',     key: 'team',          icon: <People />,        color: '#667eea', path: '/admin/team' },
   { label: 'Faculty',          key: 'faculty',        icon: <School />,        color: '#f59e0b', path: '/admin/faculty' },
   { label: 'Gallery Photos',   key: 'gallery',        icon: <PhotoLibrary />,  color: '#10b981', path: '/admin/gallery' },
+  { label: 'Resources',        key: 'resources',      icon: <LibraryBooks />,  color: '#a855f7', path: '/admin/resources' },
   { label: 'Announcements',    key: 'announcements',  icon: <Campaign />,      color: '#ef4444', path: '/admin/announcements' },
   { label: 'Events',           key: 'events',         icon: <Event />,         color: '#8b5cf6', path: '/admin/events' },
   { label: 'Applications',     key: 'applications',   icon: <AssignmentInd />, color: '#0ea5e9', path: '/admin/applications', badge: 'pendingApplications' },
@@ -41,16 +43,17 @@ const statCards: StatCard[] = [
 const AdminDashboard: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [stats, setStats] = useState<Stats>({ team: 0, faculty: 0, gallery: 0, announcements: 0, events: 0, applications: 0, pendingApplications: 0 });
+  const [stats, setStats] = useState<Stats>({ team: 0, faculty: 0, gallery: 0, resources: 0, announcements: 0, events: 0, applications: 0, pendingApplications: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [team, faculty, gallery, announcements, events, applications] = await Promise.all([
+        const [team, faculty, gallery, resources, announcements, events, applications] = await Promise.all([
           fetch(`${API_BASE}/team`).then(r => r.json()),
           fetch(`${API_BASE}/faculty`).then(r => r.json()),
           fetch(`${API_BASE}/gallery`).then(r => r.json()),
+          fetch(`${API_BASE}/resources`).then(r => r.json()),
           fetch(`${API_BASE}/announcements/all`, { headers: authHeaders() }).then(r => r.json()),
           fetch(`${API_BASE}/events/all`, { headers: authHeaders() }).then(r => r.json()),
           fetch(`${API_BASE}/join`, { headers: authHeaders() }).then(r => r.json()),
@@ -60,6 +63,7 @@ const AdminDashboard: React.FC = () => {
           team: Array.isArray(team) ? team.length : 0,
           faculty: Array.isArray(faculty) ? faculty.length : 0,
           gallery: Array.isArray(gallery) ? gallery.length : 0,
+          resources: Array.isArray(resources) ? resources.length : 0,
           announcements: Array.isArray(announcements) ? announcements.length : 0,
           events: Array.isArray(events) ? events.length : 0,
           applications: Array.isArray(applications) ? applications.length : 0,

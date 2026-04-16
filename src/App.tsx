@@ -25,6 +25,7 @@ import ManageAnnouncements from './pages/admin/ManageAnnouncements';
 import ManageEvents from './pages/admin/ManageEvents';
 import ManageApplications from './pages/admin/ManageApplications';
 import ManageAdmins from './pages/admin/ManageAdmins';
+import ManageResources from './pages/admin/ManageResources';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 const App: React.FC = () => {
@@ -61,6 +62,7 @@ const App: React.FC = () => {
             <Route path="events" element={<ManageEvents />} />
             <Route path="applications" element={<ManageApplications />} />
             <Route path="admins" element={<ManageAdmins />} />
+            <Route path="resources" element={<ManageResources />} />
           </Route>
         </Routes>
       </Router>

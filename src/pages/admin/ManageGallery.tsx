@@ -11,7 +11,9 @@ import API_BASE, { authHeadersForm } from '../../services/api';
 
 interface GalleryImage { _id: string; imageUrl: string; title: string; description: string; categories: string[]; aspectRatio: string; }
 
-const emptyForm = { title: '', description: '', categories: '', aspectRatio: '3/2' };
+const GALLERY_TAGS = ['Hackathon', 'Workshop', 'Competition', 'Tech Talk', 'Seminar', 'Cultural', 'Other'];
+
+const emptyForm = { title: '', description: '', categories: [] as string[], aspectRatio: '3/2' };
 
 const ManageGallery: React.FC = () => {
   const theme = useTheme();
@@ -32,7 +34,7 @@ const ManageGallery: React.FC = () => {
 
   const openAdd = () => { setEditing(null); setForm(emptyForm); setImageFile(null); setPreview(''); setDialogOpen(true); };
   const openEdit = (img: GalleryImage) => {
-    setEditing(img); setForm({ title: img.title, description: img.description, categories: img.categories.join(', '), aspectRatio: img.aspectRatio });
+    setEditing(img); setForm({ title: img.title, description: img.description, categories: img.categories, aspectRatio: img.aspectRatio });
     setPreview(img.imageUrl); setImageFile(null); setDialogOpen(true);
   };
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +46,10 @@ const ManageGallery: React.FC = () => {
     setSaving(true);
     try {
       const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+      const { categories, ...rest } = form;
+      Object.entries(rest).forEach(([k, v]) => fd.append(k, v));
+      // Send categories as JSON string
+      fd.append('categories', JSON.stringify(categories));
       if (imageFile) fd.append('image', imageFile);
       const url = editing ? `${API_BASE}/gallery/${editing._id}` : `${API_BASE}/gallery`;
       const res = await fetch(url, { method: editing ? 'PUT' : 'POST', headers: authHeadersForm(), body: fd });
@@ -120,7 +125,31 @@ const ManageGallery: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}><TextField fullWidth label="Title" size="small" required value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }} /></Grid>
             <Grid item xs={12}><TextField fullWidth label="Description" size="small" multiline rows={2} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }} /></Grid>
-            <Grid item xs={12} sm={8}><TextField fullWidth label="Categories (comma-separated)" size="small" value={form.categories} onChange={e => setForm(p => ({ ...p, categories: e.target.value }))} placeholder="Workshop, Tech Talk, Competition" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }} /></Grid>
+            <Grid item xs={12}>
+              <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block', fontWeight: 600 }}>Tags / Categories</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8 }}>
+                {GALLERY_TAGS.map(tag => {
+                  const selected = form.categories.includes(tag);
+                  return (
+                    <Chip
+                      key={tag}
+                      label={tag}
+                      size="small"
+                      clickable
+                      onClick={() => setForm(p => ({
+                        ...p,
+                        categories: selected
+                          ? p.categories.filter(c => c !== tag)
+                          : [...p.categories, tag],
+                      }))}
+                      color={selected ? 'primary' : 'default'}
+                      variant={selected ? 'filled' : 'outlined'}
+                      sx={{ fontWeight: selected ? 600 : 400, transition: 'all 0.2s' }}
+                    />
+                  );
+                })}
+              </Box>
+            </Grid>
             <Grid item xs={12} sm={4}><TextField fullWidth label="Aspect Ratio" size="small" value={form.aspectRatio} onChange={e => setForm(p => ({ ...p, aspectRatio: e.target.value }))} placeholder="3/2" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }} /></Grid>
           </Grid>
         </DialogContent>
