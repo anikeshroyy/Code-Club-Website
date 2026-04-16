@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './theme/ThemeContext';
 import GlobalStyles from './theme/globalStyles';
+import useServerPing from './hooks/useServerPing';
 import Layout from './components/layout/Layout';
 
 // Public pages
@@ -27,6 +28,9 @@ import ManageAdmins from './pages/admin/ManageAdmins';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 const App: React.FC = () => {
+  // Keep Render backend awake — pings /api/health every 4 minutes
+  useServerPing();
+
   return (
     <ThemeProvider>
       <GlobalStyles />

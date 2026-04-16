@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, Chip, Stack, IconButton, Dialog, DialogContent, CircularProgress } from '@mui/material';
+import { Box, Typography, Container, Grid, Chip, Stack, IconButton, Dialog, DialogContent } from '@mui/material';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import GalleryHero from '../components/gallery/GalleryHero';
@@ -155,7 +156,7 @@ const GalleryPage: React.FC = () => {
           </Box>
 
           {loading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress /></Box>
+            <LoadingSpinner message="Fetching gallery images…" py={8} />
           ) : (
             <motion.div key={selectedCategory} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
               <Grid container spacing={3}>

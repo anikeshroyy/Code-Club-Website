@@ -6,7 +6,7 @@ import { useTheme as useCustomTheme } from '../../theme/ThemeContext';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   marginLeft: theme.spacing(1),
-  color: theme.palette.text.primary,
+  // color intentionally not set here so the `sx` prop passed from Navbar can override it
   '&:hover': {
     backgroundColor: theme.palette.mode === 'light' 
       ? 'rgba(0, 0, 0, 0.04)' 

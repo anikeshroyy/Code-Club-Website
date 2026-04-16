@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, Avatar, IconButton, Stack, CircularProgress, Chip, Button, Dialog, DialogTitle, DialogContent, useTheme } from '@mui/material';
+import { Box, Typography, Container, Grid, Card, CardContent, Avatar, IconButton, Stack, Chip, Button, Dialog, DialogTitle, DialogContent, useTheme } from '@mui/material';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -149,9 +150,7 @@ const TeamMembers: React.FC = () => {
         </motion.div>
 
         {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-            <CircularProgress />
-          </Box>
+          <LoadingSpinner message="Loading team members…" py={6} />
         ) : (
           <Box>
             <Grid container spacing={4} alignItems="stretch">

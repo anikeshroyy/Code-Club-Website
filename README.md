@@ -46,7 +46,7 @@ The **Code Club Website** is a modern, full-stack web application built for the 
 
 ## 🔗 Live Demo
 
-> 🌍 **Frontend:** [https://aarambhgecjamui.live](https://aarambhgecjamui.live)
+> 🌍 **Frontend:** [https://codeclubgecjamui.in](https://codeclubgecjamui.in)
 > ⚙️ **Backend API:** Hosted on [Render](https://render.com)
 
 ---

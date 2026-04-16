@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, Avatar, CircularProgress } from '@mui/material';
+import { Box, Typography, Container, Grid, Card, CardContent, Avatar } from '@mui/material';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import API_BASE from '../../services/api';
@@ -73,9 +74,7 @@ const FacultyCoordinators: React.FC = () => {
         </motion.div>
 
         {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-            <CircularProgress />
-          </Box>
+          <LoadingSpinner message="Loading faculty coordinators…" py={6} />
         ) : (
           <Grid container spacing={4} alignItems="stretch">
             {faculty.map((coordinator, index) => (

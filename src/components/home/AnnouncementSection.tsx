@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Button, Divider, Chip, Paper, List, ListItem } from '@mui/material';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { CalendarToday, ArrowForward, NotificationsActive, ChevronRight } from '@mui/icons-material';
@@ -60,28 +61,58 @@ const AnnouncementTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.mode === 'light' ? theme.palette.grey[900] : theme.palette.grey[100],
 }));
 
+// Per-row inline "View" button
 const ViewButton = styled(Button)(({ theme }) => ({
-  padding: '4px 12px', borderRadius: '4px', textTransform: 'none', fontWeight: 500, fontSize: '0.75rem',
+  padding: '3px 12px',
+  borderRadius: '20px',
+  textTransform: 'none',
+  fontWeight: 600,
+  fontSize: '0.75rem',
   color: theme.palette.primary.main,
+  border: `1px solid ${theme.palette.mode === 'light' ? 'rgba(63,81,181,0.25)' : 'rgba(99,120,255,0.3)'}`,
+  background: theme.palette.mode === 'light' ? 'rgba(63,81,181,0.04)' : 'rgba(99,120,255,0.06)',
+  transition: 'all 0.25s ease',
+  '& .MuiButton-endIcon': { transition: 'transform 0.25s ease', marginLeft: '4px' },
+  '&:hover': {
+    background: theme.palette.mode === 'light' ? 'rgba(63,81,181,0.1)' : 'rgba(99,120,255,0.14)',
+    border: `1px solid ${theme.palette.primary.main}`,
+    '& .MuiButton-endIcon': { transform: 'translateX(3px)' },
+  },
 }));
 
+// Bottom "View All Announcements" CTA
 const ViewAllButton = styled(Button)(({ theme }) => ({
-  margin: theme.spacing(2, 0), padding: '8px 16px', borderRadius: '4px',
-  textTransform: 'none', fontWeight: 600, fontSize: '0.875rem', color: theme.palette.common.white,
-  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  '&:hover': { background: `linear-gradient(45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})` },
+  margin: theme.spacing(2, 0),
+  padding: '10px 28px',
+  borderRadius: '50px',
+  textTransform: 'none',
+  fontWeight: 700,
+  fontSize: '0.9rem',
+  color: theme.palette.common.white,
+  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+  boxShadow: '0 6px 20px rgba(63,81,181,0.3)',
+  letterSpacing: 0.3,
+  '& .MuiButton-endIcon': { transition: 'transform 0.3s ease' },
+  '&:hover': {
+    background: `linear-gradient(90deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+    transform: 'translateY(-3px)',
+    boxShadow: '0 12px 28px rgba(63,81,181,0.4)',
+    '& .MuiButton-endIcon': { transform: 'translateX(4px)' },
+  },
 }));
 
 const VISIBLE_ANNOUNCEMENTS = 3;
 
 const AnnouncementSection: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${API_BASE}/announcements`)
       .then(r => r.json())
       .then(data => setAnnouncements(Array.isArray(data) ? data : []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const visible = announcements.slice(0, VISIBLE_ANNOUNCEMENTS);
@@ -110,7 +141,10 @@ const AnnouncementSection: React.FC = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true, margin: '-100px' }}>
           <AnnouncementContainer elevation={0} sx={{ mx: { xs: 2, sm: 'auto' } }}>
-            <List disablePadding>
+            {loading ? (
+              <LoadingSpinner message="Fetching latest announcements…" py={5} />
+            ) : (
+              <List disablePadding>
               {visible.map((announcement, index) => (
                 <React.Fragment key={announcement._id}>
                   <AnnouncementItem>
@@ -135,24 +169,37 @@ const AnnouncementSection: React.FC = () => {
                   {index < visible.length - 1 && <Divider />}
                 </React.Fragment>
               ))}
-            </List>
+              </List>
+            )}
 
-            <Box sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 }, bgcolor: theme => theme.palette.mode === 'light' ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.02)' }}>
-              {remaining > 0 && (
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5 }}>
-                  <Typography variant="caption" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem' }}>
-                    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '20px', height: '20px', borderRadius: '50%', bgcolor: 'primary.main', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', mr: 1 }}>
+              {/* View All CTA */}
+              <Box sx={{ textAlign: 'center', p: { xs: 2, sm: 2.5 }, position: 'relative', display: 'inline-flex', width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 1.5 }}>
+                {remaining > 0 && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      width: 22, height: 22, borderRadius: '50%',
+                      bgcolor: 'primary.main', color: 'white',
+                      fontSize: '0.7rem', fontWeight: 700, mr: 1,
+                    }}>
                       {remaining}
                     </Box>
-                    More announcements available
-                  </Typography>
-                </Box>
-              )}
-              <ViewAllButton variant="contained" disableElevation endIcon={<ArrowForward fontSize="small" />} href="/announcements"
-                sx={{ width: { xs: '100%', sm: 'auto' } }}>
-                View All Announcements
-              </ViewAllButton>
-            </Box>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.78rem' }}>
+                      more announcements available
+                    </Typography>
+                  </Box>
+                )}
+
+                {/* Pulse wrapper */}
+                <ViewAllButton
+                  variant="contained" disableElevation
+                  endIcon={<ArrowForward fontSize="small" />}
+                  href="/announcements"
+                  sx={{ width: { xs: '100%', sm: 'auto' } }}
+                >
+                  View All Announcements
+                </ViewAllButton>
+              </Box>
           </AnnouncementContainer>
         </motion.div>
       </Container>

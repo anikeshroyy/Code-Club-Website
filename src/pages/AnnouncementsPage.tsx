@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, Paper, List, ListItem, Divider, Chip, Button, useTheme, CircularProgress } from '@mui/material';
+import { Box, Container, Typography, Paper, List, ListItem, Divider, Chip, Button, useTheme } from '@mui/material';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import { styled } from '@mui/material/styles';
 import { CalendarToday, ChevronRight } from '@mui/icons-material';
 import { motion } from 'framer-motion';
@@ -110,7 +111,7 @@ const AnnouncementsPage: React.FC = () => {
             </Box>
 
             {loading ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress /></Box>
+              <LoadingSpinner message="Loading all announcements…" py={6} />
             ) : (
               <List disablePadding>
                 {announcements.map((announcement, index) => (

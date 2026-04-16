@@ -91,21 +91,6 @@ const NavLinkButton = styled(Button)<{ component?: React.ElementType }>(({ theme
   },
 }));
 
-const Logo = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
-  fontWeight: 800,
-  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  fontSize: '1.5rem',
-}));
-
-const LogoHighlight = styled('span')(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontWeight: 900,
-}));
 
 const MobileNavItem = styled(ListItem)(({ theme }) => ({
   padding: theme.spacing(1.5, 2),
@@ -130,6 +115,13 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const theme = useTheme();
   useCustomTheme();
+
+  // Pages whose hero is dark — nav should be white when transparent
+  const darkHeroRoutes = ['/events', '/events/archive'];
+  const navOnDark = !scrolled && darkHeroRoutes.includes(location.pathname);
+
+  // Computed nav text color: white on dark heroes (transparent navbar), else theme default
+  const navTextColor = navOnDark ? '#fff' : theme.palette.text.primary;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,12 +176,39 @@ const Navbar: React.FC = () => {
             transition={{ duration: 0.5 }}
             style={{ flexGrow: 1 }}
           >
-            <Link to="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
-              <Logo variant="h5">
-                <LogoHighlight>&lt;</LogoHighlight>
-                Code Club
-                <LogoHighlight>/&gt;</LogoHighlight>
-              </Logo>
+            <Link to="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  height: scrolled ? 38 : 46,
+                  width: scrolled ? 38 : 46,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  // Thin border ring
+                  border: navOnDark
+                    ? '1.5px solid rgba(255,255,255,0.55)'
+                    : `1.5px solid rgba(63,81,181,0.3)`,
+                  // 3px inner gap between border and image
+                  padding: '3px',
+                  background: navOnDark ? 'rgba(255,255,255,0.88)' : 'transparent',
+                  boxShadow: navOnDark ? '0 2px 10px rgba(0,0,0,0.2)' : 'none',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                {/* Inner img clipped to circle */}
+                <Box
+                  component="img"
+                  src="/logo192x192.png"
+                  alt="Code Club Logo"
+                  sx={{
+                    height: '100%', width: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '50%',
+                    display: 'block',
+                  }}
+                />
+              </Box>
             </Link>
           </motion.div>
 
@@ -200,9 +219,7 @@ const Navbar: React.FC = () => {
               aria-label="open drawer"
               edge="end"
               onClick={handleDrawerToggle}
-              sx={{ 
-                color: theme.palette.text.primary
-              }}
+              sx={{ color: navTextColor, transition: 'color 0.3s ease' }}
             >
               <MenuIcon />
             </IconButton>
@@ -223,6 +240,7 @@ const Navbar: React.FC = () => {
                 >
                   <NavLinkButton
                     className={isActive(link.path) ? 'active' : ''}
+                    sx={{ color: navTextColor, transition: 'color 0.3s ease' }}
                   >
                     {link.name}
                   </NavLinkButton>
@@ -231,14 +249,15 @@ const Navbar: React.FC = () => {
             ))}
             
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-              <ThemeToggle sx={{ mr: 1 }} />
+              <ThemeToggle sx={{ mr: 1, color: navTextColor, transition: 'color 0.3s ease' }} />
               <Tooltip title="Admin Login">
                 <IconButton component={Link} to="/admin/login" sx={{ ml: 1, p: 0.5 }}>
                   <Avatar 
                     sx={{ 
                       width: 32, 
                       height: 32,
-                      border: `2px solid ${theme.palette.primary.main}`,
+                      border: `2px solid ${navOnDark ? 'rgba(255,255,255,0.7)' : theme.palette.primary.main}`,
+                      transition: 'border-color 0.3s ease',
                     }}
                     alt="Admin"
                     src="/images/avatar-placeholder.jpg"
@@ -283,11 +302,22 @@ const Navbar: React.FC = () => {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               <Box sx={{ p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Logo variant="h6">
-                  <LogoHighlight>&lt;</LogoHighlight>
-                  Code Club
-                  <LogoHighlight>/&gt;</LogoHighlight>
-                </Logo>
+                <Link to="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  <Box sx={{
+                    height: 40, width: 40, borderRadius: '50%',
+                    border: `1.5px solid rgba(63,81,181,0.3)`,
+                    padding: '3px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <Box
+                      component="img"
+                      src="/logo192x192.png"
+                      alt="Code Club Logo"
+                      sx={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '50%', display: 'block' }}
+                    />
+                  </Box>
+                </Link>
                 <IconButton 
                   onClick={handleDrawerToggle}
                   sx={{ 

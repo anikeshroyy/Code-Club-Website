@@ -20,6 +20,7 @@
     "babel-plugin-styled-components": "^2.1.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "framer-motion": "^11.0.5",
+    "nodemon": "^3.1.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.8.0",
