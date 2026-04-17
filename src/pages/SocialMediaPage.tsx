@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Container, Grid, Typography, Stack, Tooltip,
+  Box, Container, Grid, Typography, Tooltip,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
