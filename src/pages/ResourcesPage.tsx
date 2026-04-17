@@ -14,6 +14,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SchoolIcon from '@mui/icons-material/School';
 import BuildIcon from '@mui/icons-material/Build';
 import API_BASE from '../services/api';
+import SEO from '../components/common/SEO';
 
 interface Resource {
   _id: string;
@@ -280,6 +281,11 @@ const ResourcesPage: React.FC = () => {
 
   return (
     <Box>
+      <SEO
+        title="Resources"
+        description="Access study materials, coding tutorials, and academic resources curated by Code Club GEC Jamui."
+        path="/resources"
+      />
       <ResourcesHero />
       <Container maxWidth="lg">
         <Box sx={{ py: 8 }}>

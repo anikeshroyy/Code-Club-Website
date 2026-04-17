@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
   useCustomTheme();
 
   // Pages whose hero is dark — nav should be white when transparent
-  const darkHeroRoutes = ['/events', '/events/archive'];
+  const darkHeroRoutes = ['/events', '/events/archive', '/social'];
   const navOnDark = !scrolled && darkHeroRoutes.includes(location.pathname);
 
   // Computed nav text color: white on dark heroes (transparent navbar), else theme default

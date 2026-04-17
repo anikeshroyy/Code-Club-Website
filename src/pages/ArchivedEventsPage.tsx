@@ -11,6 +11,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import API_BASE from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import SEO from '../components/common/SEO';
 
 interface Event {
   _id: string;
@@ -131,6 +132,11 @@ const ArchivedEventsPage: React.FC = () => {
 
   return (
     <Box>
+      <SEO
+        title="Event Archive"
+        description="Browse the complete archive of past workshops, hackathons, and seminars organised by Code Club GEC Jamui."
+        path="/events/archive"
+      />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <HeroSection>
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>

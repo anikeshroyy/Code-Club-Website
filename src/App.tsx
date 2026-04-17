@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from './theme/ThemeContext';
 import GlobalStyles from './theme/globalStyles';
 import useServerPing from './hooks/useServerPing';
@@ -14,6 +15,7 @@ import JoinPage from './pages/JoinPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import EventsPage from './pages/EventsPage';
 import ArchivedEventsPage from './pages/ArchivedEventsPage';
+import SocialMediaPage from './pages/SocialMediaPage';
 
 // Admin pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -33,6 +35,7 @@ const App: React.FC = () => {
   useServerPing();
 
   return (
+    <HelmetProvider>
     <ThemeProvider>
       <GlobalStyles />
       <Router>
@@ -47,6 +50,7 @@ const App: React.FC = () => {
             <Route path="/announcements" element={<AnnouncementsPage />} />
             <Route path="/events" element={<EventsPage />} />
             <Route path="/events/archive" element={<ArchivedEventsPage />} />
+            <Route path="/social" element={<SocialMediaPage />} />
           </Route>
 
           {/* ── Admin login (no layout) ── */}
@@ -67,6 +71,7 @@ const App: React.FC = () => {
         </Routes>
       </Router>
     </ThemeProvider>
+    </HelmetProvider>
   );
 };
 

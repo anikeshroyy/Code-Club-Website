@@ -5,10 +5,16 @@ import PrincipalMessage from '../components/about/PrincipalMessage';
 import FacultyCoordinators from '../components/about/FacultyCoordinators';
 import TeamMembers from '../components/about/TeamMembers';
 import PastMembers from '../components/about/PastMembers';
+import SEO from '../components/common/SEO';
 
 const AboutPage: React.FC = () => {
   return (
     <Box>
+      <SEO
+        title="About Us"
+        description="Learn about Code Club GEC Jamui — our story, mission, vision, faculty coordinators, and the team driving innovation at Government Engineering College Jamui."
+        path="/about"
+      />
       <AboutHero />
       <Container maxWidth="lg">
         <Box sx={{ py: 8 }}>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aarambhgecjamui.live/sitemap.xml
+Sitemap: https://www.codeclubgecjamui.in/sitemap.xml

@@ -16,7 +16,7 @@ import {
   Twitter,
   Instagram,
   LinkedIn,
-  GitHub,
+  // GitHub,
   Email,
   LocationOn,
   KeyboardArrowUp,
@@ -265,6 +265,7 @@ const Footer: React.FC = () => {
                 <FooterLink to="/gallery">Gallery</FooterLink>
                 <FooterLink to="/join">Join Us</FooterLink>
                 <FooterLink to="/announcements">Announcements</FooterLink>
+                <FooterLink to="/social">Code Club on Social Media</FooterLink>
               </motion.div>
             </Grid>
 

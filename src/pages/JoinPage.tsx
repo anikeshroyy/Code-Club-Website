@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import JoinHero from '../components/join/JoinHero';
 import API_BASE from '../services/api';
+import SEO from '../components/common/SEO';
 
 const FormContainer = styled(Paper)(({ theme }) => ({
   padding: '40px',
@@ -66,6 +67,11 @@ const JoinPage: React.FC = () => {
 
   return (
     <Box>
+      <SEO
+        title="Join Us"
+        description="Become a member of Code Club GEC Jamui. Fill in the registration form and join a community of passionate coders and innovators."
+        path="/join"
+      />
       <JoinHero />
       <Container maxWidth="md">
         <Box sx={{ py: 8 }}>

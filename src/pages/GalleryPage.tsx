@@ -14,6 +14,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import API_BASE from '../services/api';
+import SEO from '../components/common/SEO';
 
 interface GalleryImage {
   _id: string;
@@ -198,6 +199,11 @@ const GalleryPage: React.FC = () => {
 
   return (
     <Box>
+      <SEO
+        title="Gallery"
+        description="Browse photos from Code Club GEC Jamui events — hackathons, workshops, competitions, tech talks and more."
+        path="/gallery"
+      />
       <GalleryHero />
       <Container maxWidth="lg">
         <Box sx={{ py: 8 }}>

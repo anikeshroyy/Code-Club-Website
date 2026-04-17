@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import { CalendarToday, ChevronRight } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import API_BASE from '../services/api';
+import SEO from '../components/common/SEO';
 
 interface Announcement {
   _id: string;
@@ -92,6 +93,11 @@ const AnnouncementsPage: React.FC = () => {
 
   return (
     <PageContainer>
+      <SEO
+        title="Announcements"
+        description="Stay updated with the latest announcements, opportunities, and news from Code Club GEC Jamui."
+        path="/announcements"
+      />
       <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <PageHeader sx={{ mt: { xs: 4, sm: 5, md: 6 } }}>
