@@ -50,6 +50,8 @@ mongoose
     console.log('✅  MongoDB connected');
     // Auto-seed first admin if none exists
     await require('./seed')();
+    // Start scheduled background jobs (self-ping, DB health check)
+    require('./cron')();
     app.listen(PORT, () => console.log(`🚀  Server running on port ${PORT}`));
   })
   .catch(err => {

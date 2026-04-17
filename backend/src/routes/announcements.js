@@ -41,7 +41,7 @@ router.post('/', auth, async (req, res) => {
 // PUT /api/announcements/:id  — protected
 router.put('/:id', auth, async (req, res) => {
   try {
-    const { title, date, description, link, isNew, isActive } = req.body;
+    const { title, date, description, link, badge, isActive } = req.body;
     const updated = await Announcement.findByIdAndUpdate(
       req.params.id,
       {
@@ -49,7 +49,7 @@ router.put('/:id', auth, async (req, res) => {
         ...(date  !== undefined && { date: new Date(date) }),
         ...(description !== undefined && { description }),
         ...(link  !== undefined && { link }),
-        ...(badge    !== undefined && { badge }),
+        ...(badge !== undefined && { badge }),
         ...(isActive !== undefined && { isActive }),
       },
       { new: true }
