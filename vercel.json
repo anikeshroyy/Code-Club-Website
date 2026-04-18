@@ -6,14 +6,11 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(whatsapp|facebookexternalhit|twitterbot|discordbot|linkedinbot|telegrambot|slackbot|skypeuripreview).*"
+          "value": "(?i).*(facebookexternalhit|twitterbot|slackbot|vkShare|W3C_Validator|redditbot|applebot|WhatsApp|SkypeUriPreview|discordbot|linkedinbot|embedly).*"
         }
       ],
-      "destination": "/api/og"
+      "destination": "/api/seo"
     },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
