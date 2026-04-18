@@ -1,9 +1,7 @@
 module.exports = async (req, res) => {
-  // Strip origin or query params if any
   const urlPath = req.url.split('?')[0];
-
   const SITE_URL = 'https://www.codeclubgecjamui.in';
-  
+
   // Default fallback
   let meta = {
     title: 'Code Club | GEC Jamui',
@@ -64,43 +62,36 @@ module.exports = async (req, res) => {
 
   const canonicalUrl = `${SITE_URL}${urlPath}`;
 
-  // We are only returning the <head> block metadata required by Social Platforms
-  // This is safe because only specific crawler User-Agents are routed here.
-  const htmlResult = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>${meta.title}</title>
-  <meta name="description" content="${meta.description}" />
-  <link rel="canonical" href="${canonicalUrl}" />
+  try {
+    // Determine exact host so it doesn't break in staging mode
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    
+    // Fetch the truly compiled static index.html from the root 
+    // (since root '/' doesn't point to /api/seo due to vercel.json rewrites)
+    const fetchRes = await fetch(`${protocol}://${host}/`);
+    let html = await fetchRes.text();
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="${canonicalUrl}" />
-  <meta property="og:site_name" content="Code Club GEC Jamui" />
-  <meta property="og:title" content="${meta.title}" />
-  <meta property="og:description" content="${meta.description}" />
-  <meta property="og:image" content="${meta.image}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+    // Safely inject the dynamically specific tags right into the original 
+    // pre-bundled React index.html. Both normal users and crawlers will get this!
+    html = html.replace(/<title>.*?<\/title>/i, `<title>${meta.title}</title>`);
+    html = html.replace(/<meta name="description" content=".*?"\s*\/>/i, `<meta name="description" content="${meta.description}" />`);
+    
+    html = html.replace(/<meta property="og:title" content=".*?"\s*\/>/i, `<meta property="og:title" content="${meta.title}" />`);
+    html = html.replace(/<meta property="og:description" content=".*?"\s*\/>/i, `<meta property="og:description" content="${meta.description}" />`);
+    html = html.replace(/<meta property="og:image" content=".*?"\s*\/>/i, `<meta property="og:image" content="${meta.image}" />`);
+    html = html.replace(/<meta property="og:url" content=".*?"\s*\/>/i, `<meta property="og:url" content="${canonicalUrl}" />`);
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@codecgecjamui" />
-  <meta name="twitter:url" content="${canonicalUrl}" />
-  <meta name="twitter:title" content="${meta.title}" />
-  <meta name="twitter:description" content="${meta.description}" />
-  <meta name="twitter:image" content="${meta.image}" />
-</head>
-<body>
-  <h1>${meta.title}</h1>
-  <p>${meta.description}</p>
-  <!-- Social Crawlers will extract metadata from the head directly -->
-</body>
-</html>`;
+    html = html.replace(/<meta property="twitter:title" content=".*?"\s*\/>/i, `<meta property="twitter:title" content="${meta.title}" />`);
+    html = html.replace(/<meta property="twitter:description" content=".*?"\s*\/>/i, `<meta property="twitter:description" content="${meta.description}" />`);
+    html = html.replace(/<meta property="twitter:image" content=".*?"\s*\/>/i, `<meta property="twitter:image" content="${meta.image}" />`);
+    html = html.replace(/<meta property="twitter:url" content=".*?"\s*\/>/i, `<meta property="twitter:url" content="${canonicalUrl}" />`);
 
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=43200'); // Cache for 24h
-  res.status(200).send(htmlResult);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=43200');
+    res.status(200).send(html);
+  } catch (error) {
+    console.error("SEO Proxy Fetch Error:", error);
+    res.status(500).send("Error generating SEO HTML");
+  }
 };

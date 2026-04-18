@@ -1,16 +1,13 @@
 {
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "header",
-          "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|twitterbot|slackbot|vkShare|W3C_Validator|redditbot|applebot|WhatsApp|SkypeUriPreview|discordbot|linkedinbot|embedly).*"
-        }
-      ],
-      "destination": "/api/seo"
-    },
+    { "source": "/about", "destination": "/api/seo" },
+    { "source": "/events", "destination": "/api/seo" },
+    { "source": "/events/(.*)", "destination": "/api/seo" },
+    { "source": "/gallery", "destination": "/api/seo" },
+    { "source": "/announcements", "destination": "/api/seo" },
+    { "source": "/join", "destination": "/api/seo" },
+    { "source": "/resources", "destination": "/api/seo" },
+    { "source": "/social", "destination": "/api/seo" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
